@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
+
+h1 {
+    position: absolute;
+    text-align: center;
+    font-family: Bangers, serif;
+    color: yellow;
+    font-size: calc(2vw + 1vh);
+    -webkit-text-stroke-width: 0.1vh;
+    -webkit-text-stroke-color: black;
+    background-color: red;
+    width: 35vw;
+    left: 32.5vw;
+}
+
+body { 
+    background-color: magenta;
+    margin: 0; 
+    padding: 0;
+}
