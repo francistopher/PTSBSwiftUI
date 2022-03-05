@@ -61,7 +61,7 @@ struct ElementsView: View {
             return "P" + String(value)
         } else {
             if value > 8 {
-                return String(value - 1)
+                return String(value - 3)
             } else {
                 return String(value)
             }
@@ -175,10 +175,41 @@ struct ElementsView: View {
             //'spfdivjs;ofdijvs;ofjn
         }
         .onAppear {
+            // scrape periodic table data
+            fetchPeriodicTableData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 growSelectElementsButton()
             }
         }
+    }
+    
+    private func fetchPeriodicTableData() {
+        print("START FETCHING DATA...")
+        let url:String = "https://en.wikipedia.org/wiki/List_of_chemical_elements"
+        let urlObject:URL = URL(string:url)!
+        let task = URLSession.shared.dataTask(with: urlObject) { (data, response, error) in
+            guard let data = data else {
+                print("data was nil")
+                return
+            }
+            
+            guard let htmlString = String(data: data, encoding: .utf8) else {
+                print("couldn't cast data into string")
+                return
+            }
+            
+            parseHTML(html:htmlString)
+            
+        }
+        task.resume()
+    }
+    
+    private func parseHTML(html:String) {
+        print(html)
+        // use regular expression to extract periodic table data
+        // load data onto disctionary of arrays
+        // load data onto corresponding element cell
+        
     }
 }
 
