@@ -1,6 +1,7 @@
 # Periodic Table Study Buddy
 
-static website
+- static website
+- LIMITED BROWSER SUPPORT
 
 ## Motivation
 
