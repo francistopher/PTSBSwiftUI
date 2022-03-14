@@ -4,12 +4,21 @@
 
 ## To do list
 
-- UPDATE periodic table
-	- load elements info
-	- create current element info
-	- select elements
-	- unselect elements
-	- style elements based on element type
+- UPDATE Periodic Table
+	- Download html periodic table wikipedia website
+	- Filter periodic table info with regex
+	- Load periodic table info onto dictionaries/arrays
+	- Load elements symbol and number into each cell
+	- Update current element selected view
+	- Create clear button
+	- Create ability for user to select deselect buttons for assessment
+- CREATE asessment view
+	- Create choose categories view
+	- Create start assessment button
+		- Generate questions based on categories chosen
+	- Create conclusion view with final score
+	- Create start over button
+	- Create close assessment button
 
 ## Design
 
