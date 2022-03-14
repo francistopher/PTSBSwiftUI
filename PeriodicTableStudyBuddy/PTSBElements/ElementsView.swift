@@ -16,26 +16,60 @@ struct ElementsView: View {
     @State private var elementScale:CGFloat = 0.0
     
     private func growElementScale(elementScale:CGFloat) {
-        if (self.elementScale < 1.0) {
+        if (self.elementScale < 0.96) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
                 withAnimation {
                     self.elementScale = elementScale
                     self.growElementScale(elementScale: self.elementScale + 0.04)
                 }
             }
+        } else {
+            self.elementScale = 1.0
+        }
+    }
+    
+    private func shrinkElementScale(elementScale:CGFloat) {
+        if (self.elementScale > 0.04) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+                withAnimation {
+                    self.elementScale = elementScale
+                    if (self.elementScale < 0.2 && self.elementScale > 0.19) {
+                        self.shrinkCircle(newSize: 1.75 - 0.025)
+                    }
+                    self.shrinkElementScale(elementScale: self.elementScale - 0.04)
+                }
+            }
+        } else {
+            self.elementScale = 0.0
         }
     }
     
     private func growCircle(newSize:CGFloat) { // grow circle background after select elements is pressed
-        if (self.circleRadius < 1.75) {
+        if (self.circleRadius < 1.75 - 0.025) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 withAnimation {
                     self.circleRadius = newSize
+                    if (self.circleRadius > 1.59 && self.circleRadius < 1.6) {
+                        growElementScale(elementScale: 0.04)
+                    }
                     self.growCircle(newSize: self.circleRadius + 0.025)
                 }
             }
         } else {
-            growElementScale(elementScale: 0.0)
+            self.circleRadius = 1.775
+        }
+    }
+    
+    private func shrinkCircle(newSize:CGFloat) {
+        if (self.circleRadius > 0.0 + 0.025) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                withAnimation {
+                    self.circleRadius = newSize
+                    self.shrinkCircle(newSize: self.circleRadius - 0.025)
+                }
+            }
+        } else {
+            self.circleRadius = 0.0
         }
     }
     
@@ -138,6 +172,24 @@ struct ElementsView: View {
                     y: sck.getHeight(factor: 0))
     }
     
+    private func buildCloseElementsButton() -> some View {
+        return Button("X", role: ButtonRole.cancel, action: {
+            self.shrinkElementScale(elementScale: 1.0 - 0.04)
+        })
+            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.05 * self.elementScale),
+                                      weight: Font.Weight.bold,
+                                      design: Font.Design.rounded))
+            .frame(width: sck.getHeight(factor: self.elementScale * 0.1),
+                   height: sck.getHeight(factor: self.elementScale * 0.1),
+                   alignment: Alignment.center)
+            .background(Color.init(red:1, green:0, blue:0))
+            .foregroundColor(Color.white)
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.01)))
+            .cornerRadius(sck.getHeight(factor: 0.1))
+            .position(x: sck.getWidth(factor: 1) - sck.getHeight(factor: 0.125),
+                    y: sck.getHeight(factor: 0.1))
+    }
+    
     var body: some View {
         let gap:CGFloat = sck.getHeight(factor: 0.0075)
         let verticalHeight:CGFloat = (sck.getHeight(factor: 1) - (gap * 13)) / 12
@@ -148,6 +200,7 @@ struct ElementsView: View {
         ZStack {
             buildSelectElementButton()
             buildCircle()
+            buildCloseElementsButton()
             ForEach(0..<11) { row in // rows
                 ForEach(0..<18) { col in // columns
                     if (row > 0 && row != 8) { // Build period buttons
@@ -212,4 +265,3 @@ struct ElementsView: View {
         
     }
 }
-
