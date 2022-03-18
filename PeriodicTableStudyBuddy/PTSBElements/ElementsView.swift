@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 
 struct ElementsView: View {
     private let sck:ScreenKit = ScreenKit.shared
@@ -251,17 +252,57 @@ struct ElementsView: View {
                 return
             }
             
-            parseHTML(html:htmlString)
+            let elementHTMLs:[String] = getMatchesArray(regex: "<(tr class=\"anchor\")(.|\n)*?(tr)>", text: htmlString)
+            let elementsData:[[String:String]] = extractElementData(htmls: elementHTMLs)
             
+            for data in elementsData {
+                print(data["AtomicNumber"]!, data["Symbol"]!, data["Name"]!)
+                print("\n")
+            }
         }
         task.resume()
     }
     
-    private func parseHTML(html:String) {
-        print(html)
-        // use regular expression to extract periodic table data
-        // load data onto disctionary of arrays
-        // load data onto corresponding element cell
+    
+    func extractElementData(htmls:[String]) -> [[String:String]] {
+        var elementsData:[[String:String]] = []
+        for html in htmls {
+            let elementData:[String] = getMatchesArray(regex: "(?<=(>))(.|\n)*?(?<=(<))", text: html)
+            var elementDict:[String:String] = [:]
+            var dataNumber:Int = 1
+            for entry in elementData {
+                if (dataNumber == 2) {
+                    elementDict["AtomicNumber"] = entry.replacingOccurrences(of: "\n<", with: "")
+                } else if (dataNumber == 4) {
+                    elementDict["Symbol"] = entry.replacingOccurrences(of: "\n<", with: "")
+                } else if (dataNumber == 7) {
+                    elementDict["Name"] = entry.replacingOccurrences(of: "<", with: "")
+                }
+                // get atomic mass, they vary in data number
+                dataNumber += 1
+            }
+            elementsData.append(elementDict)
+        }
+        return elementsData
+    }
+    
+    private func getMatchesArray(regex:String, text:String) -> [String] {
+        
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in:text, range: NSRange(text.startIndex..., in:text))
+            return results.map {
+                String(text[Range($0.range, in:text)!])
+                
+            }
+        } catch let error {
+            print("no bueno \(error.localizedDescription)")
+            return []
+        }
         
     }
+    
+    
+    
+    
 }
