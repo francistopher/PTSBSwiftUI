@@ -246,44 +246,50 @@ struct ElementsView: View {
                 print("data was nil")
                 return
             }
-            
             guard let htmlString = String(data: data, encoding: .utf8) else {
                 print("couldn't cast data into string")
                 return
             }
-            
-            let elementHTMLs:[String] = getMatchesArray(regex: "<(tr class=\"anchor\")(.|\n)*?(tr)>", text: htmlString)
-            let elementsData:[[String:String]] = extractElementData(htmls: elementHTMLs)
-            
-            for data in elementsData {
-                print(data["AtomicNumber"]!, data["Symbol"]!, data["Name"]!)
-                print("\n")
-            }
+            printElementsData(htmlString: htmlString)
         }
         task.resume()
     }
     
+    func printElementsData(htmlString:String) {
+        let regex:String = "<(tr class=\"anchor\")(.|\n)*?(tr)>"
+        let elementHTMLs:[String] = getMatchesArray(regex: regex, text: htmlString)
+        let elementsData:[[String:String]] = getElementsData(htmls: elementHTMLs)
+        for data in elementsData {
+            print(data["AtomicNumber"]!, data["Symbol"]!, data["Name"]!)
+            print("\n")
+        }
+    }
     
-    func extractElementData(htmls:[String]) -> [[String:String]] {
+    func getElementsData(htmls:[String]) -> [[String:String]] {
         var elementsData:[[String:String]] = []
         for html in htmls {
-            let elementData:[String] = getMatchesArray(regex: "(?<=(>))(.|\n)*?(?<=(<))", text: html)
-            var elementDict:[String:String] = [:]
-            var dataNumber:Int = 1
-            for entry in elementData {
-                if (dataNumber == 2) {
-                    elementDict["AtomicNumber"] = entry.replacingOccurrences(of: "\n<", with: "")
-                } else if (dataNumber == 4) {
-                    elementDict["Symbol"] = entry.replacingOccurrences(of: "\n<", with: "")
-                } else if (dataNumber == 7) {
-                    elementDict["Name"] = entry.replacingOccurrences(of: "<", with: "")
-                }
-                // get atomic mass, they vary in data number
-                dataNumber += 1
-            }
-            elementsData.append(elementDict)
+            elementsData.append(getElementData(html: html))
         }
         return elementsData
+    }
+    
+    func getElementData(html:String) -> [String:String] {
+        let regex:String = "(?<=(>))(.|\n)*?(?<=(<))"
+        let elementData:[String] = getMatchesArray(regex: regex, text: html)
+        var elementDict:[String:String] = [:]
+        var dataNumber:Int = 1
+        for entry in elementData {
+            if (dataNumber == 2) {
+                elementDict["AtomicNumber"] = entry.replacingOccurrences(of: "\n<", with: "")
+            } else if (dataNumber == 4) {
+                elementDict["Symbol"] = entry.replacingOccurrences(of: "\n<", with: "")
+            } else if (dataNumber == 7) {
+                elementDict["Name"] = entry.replacingOccurrences(of: "<", with: "")
+            }
+            // get atomic mass, they vary in data number
+            dataNumber += 1
+        }
+        return elementDict
     }
     
     private func getMatchesArray(regex:String, text:String) -> [String] {
