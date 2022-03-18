@@ -5,9 +5,6 @@
 ## To do list
 
 - UPDATE Periodic Table
-	- Download html periodic table wikipedia website
-	- Filter periodic table info with regex
-	- Load periodic table info onto dictionaries/arrays
 	- Load elements symbol and number into each cell
 	- Update current element selected view
 	- Create clear button
