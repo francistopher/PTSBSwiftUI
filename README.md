@@ -5,7 +5,6 @@
 ## To do list
 
 - UPDATE Periodic Table
-	- Load elements symbol and number into each cell
 	- Update current element selected view
 	- Create clear button
 	- Create ability for user to select deselect buttons for assessment
@@ -19,6 +18,6 @@
 
 ## Design
 
-I've been watching and studying anime to improve my graphic design skillz. Embarrassing. [Ahh, Super Kawaii!](https://www.youtube.com/watch?v=Kgjkth6BRRY)
+I've been watching and studying anime to improve my graphic design skillz. Embarrassing. Ahh, Super Kawaii!
 
 ![Cute Atom](/PeriodicTableStudyBuddy/Assets.xcassets/hydrogen.imageset/hydrogen.png)
