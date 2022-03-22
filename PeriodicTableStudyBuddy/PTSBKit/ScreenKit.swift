@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct ScreenKit {
-    static let shared = ScreenKit()
+    static let shared:ScreenKit = ScreenKit()
     private var width:CGFloat!
     private var height:CGFloat!
     private var isLandscape:Bool = true;

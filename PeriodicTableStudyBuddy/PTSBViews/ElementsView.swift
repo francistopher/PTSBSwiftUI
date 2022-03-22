@@ -11,6 +11,7 @@ import CoreData
 
 struct ElementsView: View {
     private let sck:ScreenKit = ScreenKit.shared
+    private let ed:ElementsData = ElementsData.shared
     
     @State private var buttonLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
@@ -132,6 +133,7 @@ struct ElementsView: View {
     }
     
     private func buildElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vFix:CGFloat, vHeight:CGFloat) -> some View {
+        
         return Button("1\nE", role: ButtonRole.cancel, action: {
         })
             .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: Alignment.center)
@@ -229,86 +231,9 @@ struct ElementsView: View {
             //'spfdivjs;ofdijvs;ofjn
         }
         .onAppear {
-            // scrape periodic table data
-            fetchPeriodicTableData()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 growSelectElementsButton()
             }
         }
     }
-    
-    private func fetchPeriodicTableData() {
-        print("START FETCHING DATA...")
-        let url:String = "https://en.wikipedia.org/wiki/List_of_chemical_elements"
-        let urlObject:URL = URL(string:url)!
-        let task = URLSession.shared.dataTask(with: urlObject) { (data, response, error) in
-            guard let data = data else {
-                print("data was nil")
-                return
-            }
-            guard let htmlString = String(data: data, encoding: .utf8) else {
-                print("couldn't cast data into string")
-                return
-            }
-            printElementsData(htmlString: htmlString)
-        }
-        task.resume()
-    }
-    
-    func printElementsData(htmlString:String) {
-        let regex:String = "<(tr class=\"anchor\")(.|\n)*?(tr)>"
-        let elementHTMLs:[String] = getMatchesArray(regex: regex, text: htmlString)
-        let elementsData:[[String:String]] = getElementsData(htmls: elementHTMLs)
-        for data in elementsData {
-            print(data["AtomicNumber"]!, data["Symbol"]!, data["Name"]!)
-            print("\n")
-        }
-    }
-    
-    func getElementsData(htmls:[String]) -> [[String:String]] {
-        var elementsData:[[String:String]] = []
-        for html in htmls {
-            elementsData.append(getElementData(html: html))
-        }
-        return elementsData
-    }
-    
-    func getElementData(html:String) -> [String:String] {
-        let regex:String = "(?<=(>))(.|\n)*?(?<=(<))"
-        let elementData:[String] = getMatchesArray(regex: regex, text: html)
-        var elementDict:[String:String] = [:]
-        var dataNumber:Int = 1
-        for entry in elementData {
-            if (dataNumber == 2) {
-                elementDict["AtomicNumber"] = entry.replacingOccurrences(of: "\n<", with: "")
-            } else if (dataNumber == 4) {
-                elementDict["Symbol"] = entry.replacingOccurrences(of: "\n<", with: "")
-            } else if (dataNumber == 7) {
-                elementDict["Name"] = entry.replacingOccurrences(of: "<", with: "")
-            }
-            // get atomic mass, they vary in data number
-            dataNumber += 1
-        }
-        return elementDict
-    }
-    
-    private func getMatchesArray(regex:String, text:String) -> [String] {
-        
-        do {
-            let regex = try NSRegularExpression(pattern: regex)
-            let results = regex.matches(in:text, range: NSRange(text.startIndex..., in:text))
-            return results.map {
-                String(text[Range($0.range, in:text)!])
-                
-            }
-        } catch let error {
-            print("no bueno \(error.localizedDescription)")
-            return []
-        }
-        
-    }
-    
-    
-    
-    
 }

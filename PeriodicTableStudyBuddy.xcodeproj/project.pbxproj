@@ -19,6 +19,7 @@
 		B27731D027B4C2F300B49682 /* PeriodicTableStudyBuddyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27731CF27B4C2F300B49682 /* PeriodicTableStudyBuddyUITestsLaunchTests.swift */; };
 		B290310D27BEE167006D2203 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B290310C27BEE167006D2203 /* Assets.xcassets */; };
 		B290310F27BF16FF006D2203 /* ElementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B290310E27BF16FF006D2203 /* ElementsView.swift */; };
+		B2C5BCB227E979F0003D0963 /* ElementsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C5BCB127E979F0003D0963 /* ElementsData.swift */; };
 		B2FD268827BE176B002E1116 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FD268727BE176B002E1116 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,7 @@
 		B27731CF27B4C2F300B49682 /* PeriodicTableStudyBuddyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableStudyBuddyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B290310C27BEE167006D2203 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = PeriodicTableStudyBuddy/Assets.xcassets; sourceTree = "<group>"; };
 		B290310E27BF16FF006D2203 /* ElementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementsView.swift; sourceTree = "<group>"; };
+		B2C5BCB127E979F0003D0963 /* ElementsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementsData.swift; sourceTree = "<group>"; };
 		B2FD268727BE176B002E1116 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,22 +85,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B24A55C327B57A3A0048BE9C /* CFKit */ = {
+		B24A55C327B57A3A0048BE9C /* PTSBKit */ = {
 			isa = PBXGroup;
 			children = (
+				B2C5BCB127E979F0003D0963 /* ElementsData.swift */,
 				B24A55C427B57A680048BE9C /* ScreenKit.swift */,
 			);
-			path = CFKit;
+			path = PTSBKit;
 			sourceTree = "<group>";
 		};
-		B24A55C827B5C50B0048BE9C /* PTSBElements */ = {
+		B24A55C827B5C50B0048BE9C /* PTSBViews */ = {
 			isa = PBXGroup;
 			children = (
 				B24A55C927B5C53E0048BE9C /* IntroView.swift */,
 				B2FD268727BE176B002E1116 /* HomeView.swift */,
 				B290310E27BF16FF006D2203 /* ElementsView.swift */,
 			);
-			path = PTSBElements;
+			path = PTSBViews;
 			sourceTree = "<group>";
 		};
 		B27731A127B4C2F200B49682 = {
@@ -125,8 +128,8 @@
 		B27731AC27B4C2F200B49682 /* PeriodicTableStudyBuddy */ = {
 			isa = PBXGroup;
 			children = (
-				B24A55C827B5C50B0048BE9C /* PTSBElements */,
-				B24A55C327B57A3A0048BE9C /* CFKit */,
+				B24A55C827B5C50B0048BE9C /* PTSBViews */,
+				B24A55C327B57A3A0048BE9C /* PTSBKit */,
 				B27731AD27B4C2F200B49682 /* PeriodicTableStudyBuddyApp.swift */,
 				B27731AF27B4C2F200B49682 /* ContentView.swift */,
 				B27731B627B4C2F300B49682 /* Persistence.swift */,
@@ -297,6 +300,7 @@
 				B27731B027B4C2F200B49682 /* ContentView.swift in Sources */,
 				B290310F27BF16FF006D2203 /* ElementsView.swift in Sources */,
 				B2FD268827BE176B002E1116 /* HomeView.swift in Sources */,
+				B2C5BCB227E979F0003D0963 /* ElementsData.swift in Sources */,
 				B24A55CA27B5C53E0048BE9C /* IntroView.swift in Sources */,
 				B27731AE27B4C2F200B49682 /* PeriodicTableStudyBuddyApp.swift in Sources */,
 			);
