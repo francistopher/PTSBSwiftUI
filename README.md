@@ -5,7 +5,7 @@
 ## To do list
 
 - UPDATE Periodic Table
-	- Update current element selected view
+	- CREATE current element selected view
 	- Create clear button
 	- Create ability for user to select deselect buttons for assessment
 - CREATE asessment view

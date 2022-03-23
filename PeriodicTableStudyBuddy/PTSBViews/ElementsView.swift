@@ -15,6 +15,7 @@ struct ElementsView: View {
     @State private var buttonLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
     @State private var elementScale:CGFloat = 0.0
+    @State private var displayText:String = ""
     
     private func growElementScale(elementScale:CGFloat) {
         if (self.elementScale < 0.96) {
@@ -131,8 +132,9 @@ struct ElementsView: View {
                       y: vFix + ((CGFloat(row) * (gap + vHeight)) + gap))
     }
     
-    private func buildElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vFix:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
+    private func buildElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
         return Button("\(elementData["AtomicNumber"] ?? "0")\n\(elementData["Symbol"] ?? "H")", role: ButtonRole.cancel, action: {
+            
         })
             .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: Alignment.center)
             .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.4,
@@ -143,7 +145,7 @@ struct ElementsView: View {
             .overlay(RoundedRectangle(cornerRadius: hWidth * 0.25).stroke(Color.white, lineWidth: hWidth * 0.1))
             .cornerRadius(hWidth * 0.25)
             .position(x: hFix + ((CGFloat(col) * (gap + hWidth)) + gap),
-                      y: vFix + ((CGFloat(row) * (gap + vHeight)) + gap))
+                      y: (CGFloat(row) * (gap + vHeight)) + gap)
     }
     
     private func buildCircle() -> some View {
@@ -173,7 +175,7 @@ struct ElementsView: View {
                     y: sck.getHeight(factor: 0))
     }
     
-    private func buildCloseElementsButton() -> some View {
+    private func buildCloseElementsButton(xPos:CGFloat, yPos:CGFloat) -> some View {
         return Button("X", role: ButtonRole.cancel, action: {
             self.shrinkElementScale(elementScale: 1.0 - 0.04)
         })
@@ -187,37 +189,29 @@ struct ElementsView: View {
             .foregroundColor(Color.white)
             .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.01)))
             .cornerRadius(sck.getHeight(factor: 0.1))
-            .position(x: sck.getWidth(factor: 1) - sck.getHeight(factor: 0.125),
-                      y: sck.getHeight(factor: 0.1))
+            .position(x: xPos, y:yPos)
     }
     
     var body: some View {
         let gap:CGFloat = sck.getHeight(factor: 0.0075)
-        let verticalHeight:CGFloat = (sck.getHeight(factor: 1) - (gap * 13)) / 12
-        let verticalFix:CGFloat = (verticalHeight * 0.5)
+        let verticalHeight:CGFloat = (sck.getHeight(factor: 1) - (gap * 12)) / 11
         let horizontalSpace:CGFloat = sck.getHeight(factor: 1) * 4.0 / 3.0
         let horizontalWidth:CGFloat = (horizontalSpace - (gap * 19)) / 18
-        let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5) + (horizontalWidth * 0.5)
+        let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
         var data:[[String:String]] = ElementsData.shared.getTheRealData()
         ZStack {
             buildSelectElementButton()
             buildCircle()
-            buildCloseElementsButton()
+            buildCloseElementsButton(xPos:horizontalFix + horizontalWidth + (gap), yPos:verticalHeight * 10)
                 ForEach(0..<11) { row in // rows
                     ForEach(0..<18) { col in // columns
-                        if (row > 0 && row != 8) { // Build period buttons
-                            // define period  buttons
-                            self.buildPeriodButtons(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vFix: verticalFix, vHeight: verticalHeight)
-                        }
-                        if (row == 0) { // Build group buttons
-                            self.buildGroupButtons(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vFix: verticalFix, vHeight: verticalHeight)
-                        } else if (row != 8) { // Build element button
+                        if (row > 0 && row != 8) { // Build element button
                             if (row != 1 || (col == 0 || col == 17)) { // Get rid of period 1 vacant cells
                                 if (row != 2 || (col < 2 || col > 11)) { // Get rid of period 2 vacant cells
                                     if (row != 3 || (col < 2 || col > 11)) { // Get rid of period 3 vacant cells
                                         if (row != 9 || (col > 2 && col < 17)) { // Get rid of period 8 vacant cells
-                                            if (row != 10 || (col > 2 && col < 17)) {
-                                                self.buildElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vFix: verticalFix, vHeight: verticalHeight, elementData:data.removeFirst())
+                                            if (row != 10 || (col > 2 && col < 17)) { // Get rid of period 9 vacant cells
+                                                self.buildElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.removeFirst())
                                             }
                                         }
                                     }
@@ -226,7 +220,6 @@ struct ElementsView: View {
                         }
                     }
                 }
-            //'spfdivjs;ofdijvs;ofjn
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
