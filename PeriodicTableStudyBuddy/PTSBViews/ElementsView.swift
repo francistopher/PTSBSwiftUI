@@ -15,7 +15,8 @@ struct ElementsView: View {
     @State private var buttonLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
     @State private var elementScale:CGFloat = 0.0
-    @State private var displayText:String = ""
+    @State private var largeElementCellText:String = "1\nH"
+    @State private var elementInfoText:String = "Atomic Number: 1\nSymbol: H\nName: Hydrogen"
     
     private func growElementScale(elementScale:CGFloat) {
         if (self.elementScale < 0.96) {
@@ -84,57 +85,10 @@ struct ElementsView: View {
         }
     }
     
-    private func getElementGroupText(value:Int) -> String {
-        if (value == 1) {
-            return "G" + String(value)
-        } else {
-            return String(value)
-        }
-    }
-    
-    private func getElementPeriodText(value:Int) -> String {
-        if (value == 1) {
-            return "P" + String(value)
-        } else {
-            if value > 8 {
-                return String(value - 3)
-            } else {
-                return String(value)
-            }
-        }
-    }
-    
-    private func buildPeriodButtons(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vFix:CGFloat, vHeight:CGFloat) -> some View {
-        return Button(getElementPeriodText(value: row), role: ButtonRole.cancel, action: {
-            
-        })
-            .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: .center)
-            .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.5,
-                                      weight: Font.Weight.bold,
-                                      design: Font.Design.rounded))
-            .background(Color.clear)
-            .foregroundColor(Color.white)
-            .position(x: hFix - hWidth + gap,
-                      y: vFix + ((CGFloat(row) * (gap + vHeight)) + gap))
-    }
-    
-    private func buildGroupButtons(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vFix:CGFloat, vHeight:CGFloat) -> some View {
-        return Button(getElementGroupText(value: col + 1), role: ButtonRole.cancel, action: {
-            
-        })
-            .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: .bottom)
-            .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.5,
-                                      weight: Font.Weight.bold,
-                                      design: Font.Design.rounded))
-            .background(Color.clear)
-            .foregroundColor(Color.white)
-            .position(x: hFix + ((CGFloat(col) * (gap + hWidth)) + gap),
-                      y: vFix + ((CGFloat(row) * (gap + vHeight)) + gap))
-    }
-    
-    private func buildElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
-        return Button("\(elementData["AtomicNumber"] ?? "0")\n\(elementData["Symbol"] ?? "H")", role: ButtonRole.cancel, action: {
-            
+    private func renderElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
+        return Button("\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")", role: ButtonRole.cancel, action: {
+            self.largeElementCellText = "\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")"
+            self.elementInfoText = "Atomic Number: \(elementData["AtomicNumber"] ?? "1")\nSymbol: \(elementData["Symbol"] ?? "H")\nName: \(elementData["Name"] ?? "Hydrogen")"
         })
             .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: Alignment.center)
             .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.4,
@@ -146,9 +100,44 @@ struct ElementsView: View {
             .cornerRadius(hWidth * 0.25)
             .position(x: hFix + ((CGFloat(col) * (gap + hWidth)) + gap),
                       y: (CGFloat(row) * (gap + vHeight)) + gap)
+            .multilineTextAlignment(TextAlignment.center)
     }
     
-    private func buildCircle() -> some View {
+    private func renderLargeElementCell(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
+        return Text(self.largeElementCellText)
+            .frame(width: ((hWidth * 2.5) + gap),
+                   height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
+                   alignment: Alignment.center)
+            .font(SwiftUI.Font.system(size: (hWidth * 3) * self.elementScale * 0.4,
+                                      weight: Font.Weight.bold,
+                                      design: Font.Design.rounded))
+        
+            .background(Color.init(red: 63/255, green: 224/255, blue: 208/255))
+            .foregroundColor(Color.white)
+            .overlay(RoundedRectangle(cornerRadius: hWidth * 0.33).stroke(Color.white, lineWidth: hWidth * 0.1))
+            .cornerRadius(hWidth * 0.33)
+            .position(x: hFix + ((CGFloat(col) + 0.825) * (gap + hWidth)),
+                      y: (CGFloat(row + 1) * (gap + vHeight)) + gap)
+            .multilineTextAlignment(TextAlignment.center)
+    }
+    
+    private func renderElementInfoPane(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
+        return Text(self.elementInfoText)
+            .frame(width: ((hWidth * 7.55) + (gap * 6.55)),
+                   height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
+                   alignment: Alignment.center)
+            .font(SwiftUI.Font.system(size: (hWidth * 1.75) * self.elementScale * 0.4,
+                                      weight: Font.Weight.bold,
+                                      design: Font.Design.rounded))
+            .background(Color.init(red:63/255, green: 224/255, blue:208/255))
+            .foregroundColor(Color.white)
+            .overlay(RoundedRectangle(cornerRadius: hWidth * 0.33).stroke(Color.white, lineWidth: hWidth * 0.1))
+            .cornerRadius(hWidth * 0.33)
+            .position(x: hFix + (((CGFloat(col) + 5.725) * (gap + hWidth)) + gap),
+                      y: (CGFloat(row + 1) * (gap + vHeight)) + gap)
+    }
+    
+    private func renderCircle() -> some View {
         return Circle()
             .offset(x: (sck.getWidth(factor: 1.0/3.0) - sck.getWidth(factor: self.circleRadius)) * 0.5,
                     y: (sck.getHeight(factor: 1) - sck.getWidth(factor: self.circleRadius)) * 0.5)
@@ -157,9 +146,11 @@ struct ElementsView: View {
             .fill(Color.init(red: 255/255, green: 180/255, blue: 222/255))
     }
     
-    private func buildSelectElementButton() -> some View {
+    private func renderSelectElementButton() -> some View {
         return Button("Select Elements", role: ButtonRole.cancel, action: {
-            self.growCircle(newSize: 0.0)
+            if (self.elementScale == 0.0) {
+                self.growCircle(newSize: 0.0)
+            }
         })
             .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.045 * (self.buttonLength / 0.25)),
                                       weight: Font.Weight.bold,
@@ -175,7 +166,7 @@ struct ElementsView: View {
                     y: sck.getHeight(factor: 0))
     }
     
-    private func buildCloseElementsButton(xPos:CGFloat, yPos:CGFloat) -> some View {
+    private func renderCloseButton(xPos:CGFloat, yPos:CGFloat) -> some View {
         return Button("X", role: ButtonRole.cancel, action: {
             self.shrinkElementScale(elementScale: 1.0 - 0.04)
         })
@@ -200,9 +191,9 @@ struct ElementsView: View {
         let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
         var data:[[String:String]] = ElementsData.shared.getTheRealData()
         ZStack {
-            buildSelectElementButton()
-            buildCircle()
-            buildCloseElementsButton(xPos:horizontalFix + horizontalWidth + (gap), yPos:verticalHeight * 10)
+            renderSelectElementButton()
+            renderCircle()
+            renderCloseButton(xPos:horizontalFix + horizontalWidth + (gap), yPos:verticalHeight * 10)
                 ForEach(0..<11) { row in // rows
                     ForEach(0..<18) { col in // columns
                         if (row > 0 && row != 8) { // Build element button
@@ -211,10 +202,15 @@ struct ElementsView: View {
                                     if (row != 3 || (col < 2 || col > 11)) { // Get rid of period 3 vacant cells
                                         if (row != 9 || (col > 2 && col < 17)) { // Get rid of period 8 vacant cells
                                             if (row != 10 || (col > 2 && col < 17)) { // Get rid of period 9 vacant cells
-                                                self.buildElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.removeFirst())
+                                                self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.removeFirst())
                                             }
                                         }
                                     }
+                                }
+                            } else {
+                                if (col == 2) {
+                                    self.renderElementInfoPane(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight)
+                                    self.renderLargeElementCell(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight)
                                 }
                             }
                         }
