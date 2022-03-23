@@ -5,9 +5,8 @@
 ## To do list
 
 - UPDATE Periodic Table
-	- CREATE current element selected view
-	- Create clear button
-	- Create ability for user to select deselect buttons for assessment
+	- Create unselect button to unselect all cells for assessment
+	- Create ability for user to select/unselect cells for assessment
 - CREATE asessment view
 	- Create choose categories view
 	- Create start assessment button
