@@ -14,6 +14,11 @@
 	- Create conclusion view with final score
 	- Create start over button
 	- Create close assessment button
+- UPDATE ui to assure all aspect ratios are satisfied
+	- 4:3
+	- 16:9
+	- 19.5:9
+- UPDATE app to support dark mode
 
 ## Design
 
