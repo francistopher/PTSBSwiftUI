@@ -105,10 +105,10 @@ struct ElementsView: View {
     
     private func renderLargeElementCell(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
         return Text(self.largeElementCellText)
-            .frame(width: ((hWidth * 2.5) + gap),
+            .frame(width: ((hWidth * 2.5) + gap) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
-            .font(SwiftUI.Font.system(size: (hWidth * 3) * self.elementScale * 0.4,
+            .font(SwiftUI.Font.system(size: (hWidth * 0.9) * self.elementScale,
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
         
@@ -123,10 +123,10 @@ struct ElementsView: View {
     
     private func renderElementInfoPane(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
         return Text(self.elementInfoText)
-            .frame(width: ((hWidth * 7.55) + (gap * 6.55)),
+            .frame(width: ((hWidth * 7.55) + (gap * 6.55)) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
-            .font(SwiftUI.Font.system(size: (hWidth * 1.75) * self.elementScale * 0.4,
+            .font(SwiftUI.Font.system(size: hWidth * 0.666 * self.elementScale,
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
             .background(Color.init(red:63/255, green: 224/255, blue:208/255))
@@ -135,6 +135,7 @@ struct ElementsView: View {
             .cornerRadius(hWidth * 0.33)
             .position(x: hFix + (((CGFloat(col) + 5.725) * (gap + hWidth)) + gap),
                       y: (CGFloat(row + 1) * (gap + vHeight)) + gap)
+            .multilineTextAlignment(TextAlignment.center)
     }
     
     private func renderCircle() -> some View {
