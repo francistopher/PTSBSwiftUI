@@ -11,7 +11,7 @@ import CoreData
 
 class DataScraper {
     
-    //static let shared:DataScraper = DataScraper()
+    //static let shared:DataScraper = DataScraper() // we got elements info, no need
     
     private var regexElementsData:String?
     public var elementsData:[[String:String]]?

@@ -7,25 +7,28 @@
 
 import SwiftUI
 
+
 @main
 struct PeriodicTableStudyBuddyApp: App {
-    let persistenceController = PersistenceController.shared
+    
     let sk:ScreenKit = ScreenKit.shared
+    @StateObject var info = AppStateInfo()
     
     var body: some Scene {
         WindowGroup {
-            //            ContentView()
-            //                .environment(\.managedObjectContext,
-            //                              persistenceController.container.viewContext)
-            //                .frame(width: sk.getWidth(factor: 1),
-            //                       height: sk.getHeight(factor: 1),
-            //                       alignment: Alignment.center)
             ZStack {
                 IntroView()
-                HomeView()
-                ElementsView()
+                HomeView( info: info)
+                ElementsView( info: info)
+                    .zIndex(info.selectingElements ? 5 : 0)
+                LearningView( info: info)
+                    .zIndex(info.selectingElements ? 0 : 5)
             }
         }
     }
 }
 
+@MainActor class AppStateInfo: ObservableObject {
+    @Published var selectingElements:Bool = false
+    @Published var onHomeScreen:Bool = true
+}

@@ -14,21 +14,22 @@ struct ElementsView: View {
     
     @State private var buttonLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
-    @State private var elementScale:CGFloat = 0.0
+    @State public var elementScale:CGFloat = 0.0
     @State private var largeElementCellText:String = "1\nH"
     @State private var elementInfoText:String = "Atomic Number: 1\nSymbol: H\nName: Hydrogen"
+    @StateObject var info:AppStateInfo
     
     private func growElementScale(elementScale:CGFloat) {
-        if (self.elementScale < 0.96) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-                withAnimation {
-                    self.elementScale = elementScale
-                    self.growElementScale(elementScale: self.elementScale + 0.04)
+            if (self.elementScale < 0.96) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+                    withAnimation {
+                        self.elementScale = elementScale
+                        self.growElementScale(elementScale: self.elementScale + 0.04)
+                    }
                 }
+            } else {
+                self.elementScale = 1.0
             }
-        } else {
-            self.elementScale = 1.0
-        }
     }
     
     private func shrinkElementScale(elementScale:CGFloat) {
@@ -59,6 +60,7 @@ struct ElementsView: View {
                 }
             }
         } else {
+            info.onHomeScreen = false
             self.circleRadius = 1.775
         }
     }
@@ -72,6 +74,7 @@ struct ElementsView: View {
                 }
             }
         } else {
+            info.selectingElements = false
             self.circleRadius = 0.0
         }
     }
@@ -86,7 +89,7 @@ struct ElementsView: View {
     }
     
     private func renderElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
-        return Button("\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")", role: ButtonRole.cancel, action: {
+        return Button((self.elementScale == 1.0) ? ("\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")") : "", role: ButtonRole.cancel, action: {
             self.largeElementCellText = "\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")"
             self.elementInfoText = "Atomic Number: \(elementData["AtomicNumber"] ?? "1")\nSymbol: \(elementData["Symbol"] ?? "H")\nName: \(elementData["Name"] ?? "Hydrogen")"
         })
@@ -104,11 +107,11 @@ struct ElementsView: View {
     }
     
     private func renderLargeElementCell(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
-        return Text(self.largeElementCellText)
+        return Text((self.elementScale == 1.0) ? self.largeElementCellText : "")
             .frame(width: ((hWidth * 2.5) + gap) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
-            .font(SwiftUI.Font.system(size: (hWidth * 0.9) * self.elementScale,
+            .font(SwiftUI.Font.system(size: hWidth * self.elementScale,
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
         
@@ -122,7 +125,7 @@ struct ElementsView: View {
     }
     
     private func renderElementInfoPane(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
-        return Text(self.elementInfoText)
+        return Text((self.elementScale == 1.0) ? self.elementInfoText : "")
             .frame(width: ((hWidth * 7.55) + (gap * 6.55)) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
@@ -150,8 +153,10 @@ struct ElementsView: View {
     private func renderSelectElementButton() -> some View {
         return Button("Select Elements", role: ButtonRole.cancel, action: {
             if (self.elementScale == 0.0) {
+                info.selectingElements = true
                 self.growCircle(newSize: 0.0)
             }
+            
         })
             .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.045 * (self.buttonLength / 0.25)),
                                       weight: Font.Weight.bold,
@@ -169,7 +174,10 @@ struct ElementsView: View {
     
     private func renderCloseButton(xPos:CGFloat, yPos:CGFloat) -> some View {
         return Button("X", role: ButtonRole.cancel, action: {
-            self.shrinkElementScale(elementScale: 1.0 - 0.04)
+            if (self.elementScale == 1.0) {
+                info.onHomeScreen = true
+                self.shrinkElementScale(elementScale: 1.0 - 0.04)
+            }
         })
             .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.05 * self.elementScale),
                                       weight: Font.Weight.bold,
@@ -195,28 +203,28 @@ struct ElementsView: View {
             renderSelectElementButton()
             renderCircle()
             renderCloseButton(xPos:horizontalFix + horizontalWidth + (gap), yPos:verticalHeight * 10)
-                ForEach(0..<11) { row in // rows
-                    ForEach(0..<18) { col in // columns
-                        if (row > 0 && row != 8) { // Build element button
-                            if (row != 1 || (col == 0 || col == 17)) { // Get rid of period 1 vacant cells
-                                if (row != 2 || (col < 2 || col > 11)) { // Get rid of period 2 vacant cells
-                                    if (row != 3 || (col < 2 || col > 11)) { // Get rid of period 3 vacant cells
-                                        if (row != 9 || (col > 2 && col < 17)) { // Get rid of period 8 vacant cells
-                                            if (row != 10 || (col > 2 && col < 17)) { // Get rid of period 9 vacant cells
-                                                self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.removeFirst())
-                                            }
+            ForEach(0..<11) { row in // rows
+                ForEach(0..<18) { col in // columns
+                    if (row > 0 && row != 8) { // Build element button
+                        if (row != 1 || (col == 0 || col == 17)) { // Get rid of period 1 vacant cells
+                            if (row != 2 || (col < 2 || col > 11)) { // Get rid of period 2 vacant cells
+                                if (row != 3 || (col < 2 || col > 11)) { // Get rid of period 3 vacant cells
+                                    if (row != 9 || (col > 2 && col < 17)) { // Get rid of period 8 vacant cells
+                                        if (row != 10 || (col > 2 && col < 17)) { // Get rid of period 9 vacant cells
+                                            self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.removeFirst())
                                         }
                                     }
                                 }
-                            } else {
-                                if (col == 2) {
-                                    self.renderElementInfoPane(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight)
-                                    self.renderLargeElementCell(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight)
-                                }
+                            }
+                        } else {
+                            if (col == 2) { // render info cells
+                                self.renderElementInfoPane(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight)
+                                self.renderLargeElementCell(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight)
                             }
                         }
                     }
                 }
+            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -225,3 +233,4 @@ struct ElementsView: View {
         }
     }
 }
+

@@ -11,9 +11,7 @@
 		B24A55C527B57A680048BE9C /* ScreenKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24A55C427B57A680048BE9C /* ScreenKit.swift */; };
 		B24A55CA27B5C53E0048BE9C /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24A55C927B5C53E0048BE9C /* IntroView.swift */; };
 		B27731AE27B4C2F200B49682 /* PeriodicTableStudyBuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27731AD27B4C2F200B49682 /* PeriodicTableStudyBuddyApp.swift */; };
-		B27731B027B4C2F200B49682 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27731AF27B4C2F200B49682 /* ContentView.swift */; };
 		B27731B527B4C2F300B49682 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B27731B427B4C2F300B49682 /* Preview Assets.xcassets */; };
-		B27731B727B4C2F300B49682 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27731B627B4C2F300B49682 /* Persistence.swift */; };
 		B27731BA27B4C2F300B49682 /* PeriodicTableStudyBuddy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B27731B827B4C2F300B49682 /* PeriodicTableStudyBuddy.xcdatamodeld */; };
 		B27731C427B4C2F300B49682 /* PeriodicTableStudyBuddyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27731C327B4C2F300B49682 /* PeriodicTableStudyBuddyTests.swift */; };
 		B27731CE27B4C2F300B49682 /* PeriodicTableStudyBuddyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27731CD27B4C2F300B49682 /* PeriodicTableStudyBuddyUITests.swift */; };
@@ -21,6 +19,7 @@
 		B290310D27BEE167006D2203 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B290310C27BEE167006D2203 /* Assets.xcassets */; };
 		B290310F27BF16FF006D2203 /* ElementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B290310E27BF16FF006D2203 /* ElementsView.swift */; };
 		B2C5BCB227E979F0003D0963 /* DataScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C5BCB127E979F0003D0963 /* DataScraper.swift */; };
+		B2DF2F3D27F2C3DB005871C0 /* LearningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DF2F3C27F2C3DB005871C0 /* LearningView.swift */; };
 		B2FD268827BE176B002E1116 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FD268727BE176B002E1116 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,9 +46,7 @@
 		B24A55C927B5C53E0048BE9C /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		B27731AA27B4C2F200B49682 /* PeriodicTableStudyBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeriodicTableStudyBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27731AD27B4C2F200B49682 /* PeriodicTableStudyBuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableStudyBuddyApp.swift; sourceTree = "<group>"; };
-		B27731AF27B4C2F200B49682 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B27731B427B4C2F300B49682 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B27731B627B4C2F300B49682 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		B27731B927B4C2F300B49682 /* PeriodicTableStudyBuddy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PeriodicTableStudyBuddy.xcdatamodel; sourceTree = "<group>"; };
 		B27731BF27B4C2F300B49682 /* PeriodicTableStudyBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeriodicTableStudyBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B27731C327B4C2F300B49682 /* PeriodicTableStudyBuddyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableStudyBuddyTests.swift; sourceTree = "<group>"; };
@@ -59,6 +56,7 @@
 		B290310C27BEE167006D2203 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = PeriodicTableStudyBuddy/Assets.xcassets; sourceTree = "<group>"; };
 		B290310E27BF16FF006D2203 /* ElementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementsView.swift; sourceTree = "<group>"; };
 		B2C5BCB127E979F0003D0963 /* DataScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScraper.swift; sourceTree = "<group>"; };
+		B2DF2F3C27F2C3DB005871C0 /* LearningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningView.swift; sourceTree = "<group>"; };
 		B2FD268727BE176B002E1116 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +101,7 @@
 				B24A55C927B5C53E0048BE9C /* IntroView.swift */,
 				B2FD268727BE176B002E1116 /* HomeView.swift */,
 				B290310E27BF16FF006D2203 /* ElementsView.swift */,
+				B2DF2F3C27F2C3DB005871C0 /* LearningView.swift */,
 			);
 			path = PTSBViews;
 			sourceTree = "<group>";
@@ -134,8 +133,6 @@
 				B24A55C827B5C50B0048BE9C /* PTSBViews */,
 				B24A55C327B57A3A0048BE9C /* PTSBKit */,
 				B27731AD27B4C2F200B49682 /* PeriodicTableStudyBuddyApp.swift */,
-				B27731AF27B4C2F200B49682 /* ContentView.swift */,
-				B27731B627B4C2F300B49682 /* Persistence.swift */,
 				B27731B827B4C2F300B49682 /* PeriodicTableStudyBuddy.xcdatamodeld */,
 				B27731B327B4C2F300B49682 /* Preview Content */,
 			);
@@ -298,10 +295,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B27731BA27B4C2F300B49682 /* PeriodicTableStudyBuddy.xcdatamodeld in Sources */,
-				B27731B727B4C2F300B49682 /* Persistence.swift in Sources */,
 				B24A55C527B57A680048BE9C /* ScreenKit.swift in Sources */,
-				B27731B027B4C2F200B49682 /* ContentView.swift in Sources */,
 				B290310F27BF16FF006D2203 /* ElementsView.swift in Sources */,
+				B2DF2F3D27F2C3DB005871C0 /* LearningView.swift in Sources */,
 				B2FD268827BE176B002E1116 /* HomeView.swift in Sources */,
 				B2C5BCB227E979F0003D0963 /* DataScraper.swift in Sources */,
 				B24A55CA27B5C53E0048BE9C /* IntroView.swift in Sources */,
