@@ -66,7 +66,7 @@ struct ElementsView: View {
     }
     
     private func shrinkCircle(newSize:CGFloat) {
-        if (self.circleRadius > 0.0 + 0.025) {
+        if (self.circleRadius > 0.025) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 withAnimation {
                     self.circleRadius = newSize
