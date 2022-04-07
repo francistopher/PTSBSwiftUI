@@ -11,6 +11,11 @@ import SwiftUI
 @main
 struct PeriodicTableStudyBuddyApp: App {
     
+    init() {
+        UIView.appearance().isMultipleTouchEnabled = false
+        UIView.appearance().isExclusiveTouch = true
+    }
+    
     let sk:ScreenKit = ScreenKit.shared
     @StateObject var info = AppStateInfo()
     
@@ -31,4 +36,5 @@ struct PeriodicTableStudyBuddyApp: App {
 @MainActor class AppStateInfo: ObservableObject {
     @Published var selectingElements:Bool = false
     @Published var onHomeScreen:Bool = true
+    @Published var elementIsSelected:[Bool] = [Bool](repeating: false, count: ElementsData.shared.getTheRealData().count)
 }

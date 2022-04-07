@@ -4,9 +4,7 @@
 
 ## To do list
 
-- UPDATE Periodic Table
-	- Create unselect button to unselect all cells for assessment
-	- Create ability for user to select/unselect cells for assessment
+- FIX MAJOR BUG, PREVENT SPAMMING ELEMENTS GLITCH
 - CREATE asessment view
 	- Create choose categories view
 	- Create start assessment button

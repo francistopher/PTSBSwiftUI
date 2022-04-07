@@ -11,25 +11,26 @@ import CoreData
 
 struct ElementsView: View {
     private let sck:ScreenKit = ScreenKit.shared
+    @State private var elementBeingPressed:Bool = false
     
     @State private var buttonLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
     @State public var elementScale:CGFloat = 0.0
-    @State private var largeElementCellText:String = "1\nH"
-    @State private var elementInfoText:String = "Atomic Number: 1\nSymbol: H\nName: Hydrogen"
+    @State private var largeElementCellText:String = ""
+    @State private var elementInfoText:String = ""
     @StateObject var info:AppStateInfo
     
     private func growElementScale(elementScale:CGFloat) {
-            if (self.elementScale < 0.96) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-                    withAnimation {
-                        self.elementScale = elementScale
-                        self.growElementScale(elementScale: self.elementScale + 0.04)
-                    }
+        if (self.elementScale < 0.96) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+                withAnimation {
+                    self.elementScale = elementScale
+                    self.growElementScale(elementScale: self.elementScale + 0.04)
                 }
-            } else {
-                self.elementScale = 1.0
             }
+        } else {
+            self.elementScale = 1.0
+        }
     }
     
     private func shrinkElementScale(elementScale:CGFloat) {
@@ -89,21 +90,27 @@ struct ElementsView: View {
     }
     
     private func renderElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
-        return Button((self.elementScale == 1.0) ? ("\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")") : "", role: ButtonRole.cancel, action: {
-            self.largeElementCellText = "\(elementData["AtomicNumber"] ?? "1")\n\(elementData["Symbol"] ?? "H")"
-            self.elementInfoText = "Atomic Number: \(elementData["AtomicNumber"] ?? "1")\nSymbol: \(elementData["Symbol"] ?? "H")\nName: \(elementData["Name"] ?? "Hydrogen")"
-        })
-            .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: Alignment.center)
-            .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.4,
-                                      weight: Font.Weight.bold,
-                                      design: Font.Design.rounded))
-            .background(Color.teal)
-            .foregroundColor(Color.white)
-            .overlay(RoundedRectangle(cornerRadius: hWidth * 0.25).stroke(Color.white, lineWidth: hWidth * 0.1))
-            .cornerRadius(hWidth * 0.25)
-            .position(x: hFix + ((CGFloat(col) * (gap + hWidth)) + gap),
-                      y: (CGFloat(row) * (gap + vHeight)) + gap)
-            .multilineTextAlignment(TextAlignment.center)
+        let symbol:String = elementData["Symbol"]!
+        let atomicNumber:String = elementData["AtomicNumber"]!
+        let name:String = elementData["Name"]!
+        return Button((self.elementScale == 1.0) ? ("\(atomicNumber)\n\(symbol)") : "") {
+        
+            self.largeElementCellText = "\(atomicNumber)\n\(symbol)"
+            self.elementInfoText = "Atomic Number: \(atomicNumber)\nSymbol: \(symbol)\nName: \(name)"
+            info.elementIsSelected[Int(elementData["AtomicNumber"]!)! - 1].toggle()
+        }
+
+        .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: Alignment.center)
+        .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.4,
+                                  weight: Font.Weight.bold,
+                                  design: Font.Design.rounded))
+        .background(Color.teal)
+        .foregroundColor(Color.white)
+        .overlay(RoundedRectangle(cornerRadius: hWidth * 0.25).stroke((info.elementIsSelected[Int(elementData["AtomicNumber"]!)! - 1]) ? Color.black : Color.white, lineWidth: hWidth * 0.1))
+        .cornerRadius(hWidth * 0.25)
+        .position(x: hFix + ((CGFloat(col) * (gap + hWidth)) + gap),
+                  y: (CGFloat(row) * (gap + vHeight)) + gap)
+        .multilineTextAlignment(TextAlignment.center)
     }
     
     private func renderLargeElementCell(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
@@ -172,6 +179,27 @@ struct ElementsView: View {
                     y: sck.getHeight(factor: 0))
     }
     
+    private func renderClearButton(xPos:CGFloat, yPos:CGFloat) -> some View {
+        return Button("C") {
+            for index in 0..<(info.elementIsSelected.count) {
+                if (info.elementIsSelected[index]) {
+                    info.elementIsSelected[index].toggle()
+                }
+            }
+        }
+            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.05 * self.elementScale),
+                                      weight: Font.Weight.bold,
+                                      design: Font.Design.rounded))
+            .frame(width: sck.getHeight(factor: self.elementScale * 0.1),
+                   height: sck.getHeight(factor: self.elementScale * 0.1),
+                   alignment: Alignment.center)
+            .background(Color.gray)
+            .foregroundColor(Color.white)
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.01)))
+            .cornerRadius(sck.getHeight(factor: 0.1))
+            .position(x: xPos, y:yPos)
+    }
+    
     private func renderCloseButton(xPos:CGFloat, yPos:CGFloat) -> some View {
         return Button("X", role: ButtonRole.cancel, action: {
             if (self.elementScale == 1.0) {
@@ -198,11 +226,12 @@ struct ElementsView: View {
         let horizontalSpace:CGFloat = sck.getHeight(factor: 1) * 4.0 / 3.0
         let horizontalWidth:CGFloat = (horizontalSpace - (gap * 19)) / 18
         let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
-        var data:[[String:String]] = ElementsData.shared.getTheRealData()
+        var data:IndexingIterator<[[String:String]]> = ElementsData.shared.getTheRealData().makeIterator()
         ZStack {
             renderSelectElementButton()
             renderCircle()
-            renderCloseButton(xPos:horizontalFix + horizontalWidth + (gap), yPos:verticalHeight * 10)
+            renderCloseButton(xPos:horizontalFix + (horizontalWidth * 0.5), yPos:verticalHeight * 10.75)
+            renderClearButton(xPos:horizontalFix + (horizontalWidth * 2) - gap, yPos:verticalHeight * 9.25)
             ForEach(0..<11) { row in // rows
                 ForEach(0..<18) { col in // columns
                     if (row > 0 && row != 8) { // Build element button
@@ -211,7 +240,7 @@ struct ElementsView: View {
                                 if (row != 3 || (col < 2 || col > 11)) { // Get rid of period 3 vacant cells
                                     if (row != 9 || (col > 2 && col < 17)) { // Get rid of period 8 vacant cells
                                         if (row != 10 || (col > 2 && col < 17)) { // Get rid of period 9 vacant cells
-                                            self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.removeFirst())
+                                            self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.next()!)
                                         }
                                     }
                                 }
