@@ -1,17 +1,17 @@
 # Periodic Table Study Buddy iOS
 
 - Version Alpha
+- Abrasive spamming of element buttons will lead random de/selection
 
 ## To do list
 
-- FIX MAJOR BUG, PREVENT SPAMMING ELEMENTS GLITCH
 - CREATE asessment view
 	- Create choose categories view
 	- Create start assessment button
 		- Generate questions based on categories chosen
+		- If user gets it wrong help them
 	- Create conclusion view with final score
 	- Create start over button
-	- Create close assessment button
 
 ## Design
 

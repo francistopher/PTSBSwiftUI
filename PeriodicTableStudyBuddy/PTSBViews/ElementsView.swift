@@ -16,8 +16,8 @@ struct ElementsView: View {
     @State private var buttonLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
     @State public var elementScale:CGFloat = 0.0
-    @State private var largeElementCellText:String = ""
-    @State private var elementInfoText:String = ""
+    @State private var largeElementCellText:String = "1\nH"
+    @State private var elementInfoText:String = "Atomic Number: 1\nSymbol: H\nName: Hydrogen"
     
     @StateObject var info:AppStateInfo
     
@@ -125,7 +125,7 @@ struct ElementsView: View {
     }
     
     private func renderLargeElementCell(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
-        return Text((self.elementScale == 1.0) ? self.getLargeElementCellText(atomicNumber: 1) : "")
+        return Text((self.elementScale == 1.0) ? self.largeElementCellText : "")
             .frame(width: ((hWidth * 2.5) + gap) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
@@ -143,7 +143,7 @@ struct ElementsView: View {
     }
     
     private func renderElementInfoPane(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
-        return Text((self.elementScale == 1.0) ? self.getElementInfoText(atomicNumber: 1) : "")
+        return Text((self.elementScale == 1.0) ? self.elementInfoText : "")
             .frame(width: ((hWidth * 7.55) + (gap * 6.55)) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
