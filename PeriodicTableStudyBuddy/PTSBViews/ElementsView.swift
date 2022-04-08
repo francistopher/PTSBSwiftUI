@@ -18,6 +18,7 @@ struct ElementsView: View {
     @State public var elementScale:CGFloat = 0.0
     @State private var largeElementCellText:String = ""
     @State private var elementInfoText:String = ""
+    
     @StateObject var info:AppStateInfo
     
     private func growElementScale(elementScale:CGFloat) {
@@ -89,24 +90,34 @@ struct ElementsView: View {
         }
     }
     
-    private func renderElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, elementData:[String:String]) -> some View {
-        let symbol:String = elementData["Symbol"]!
-        let atomicNumber:String = elementData["AtomicNumber"]!
-        let name:String = elementData["Name"]!
-        return Button((self.elementScale == 1.0) ? ("\(atomicNumber)\n\(symbol)") : "") {
-        
-            self.largeElementCellText = "\(atomicNumber)\n\(symbol)"
-            self.elementInfoText = "Atomic Number: \(atomicNumber)\nSymbol: \(symbol)\nName: \(name)"
-            info.elementIsSelected[Int(elementData["AtomicNumber"]!)! - 1].toggle()
+    private func getLargeElementCellText(atomicNumber:Int) -> String {
+        return "\(atomicNumber)\n\(self.info.getSymbol(atomicNumber: atomicNumber))"
+    }
+    
+    private func getElementInfoText(atomicNumber:Int) -> String {
+        return "Atomic Number: \(atomicNumber)\nSymbol: \(self.info.getSymbol(atomicNumber: atomicNumber))\nName: \(self.info.getName(atomicNumber: atomicNumber))"
+    }
+    
+    private func renderElementButton(row:Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat, atomicNumber:Int) -> some View {
+        return Button((self.elementScale == 1.0) ? ("\(atomicNumber)\n\(self.info.getSymbol(atomicNumber: atomicNumber))") : "") {
+            self.largeElementCellText = getLargeElementCellText(atomicNumber: atomicNumber)
+            self.elementInfoText = self.getElementInfoText(atomicNumber: atomicNumber)
+            if (self.info.getIsSelected(atomicNumber: atomicNumber) == "F") {
+                self.info.setIsSelected(atomicNumber: atomicNumber, isSelected: "T")
+            } else {
+                self.info.setIsSelected(atomicNumber: atomicNumber, isSelected: "F")
+            }
         }
-
         .frame(width: hWidth * self.elementScale, height: vHeight * self.elementScale, alignment: Alignment.center)
         .font(SwiftUI.Font.system(size: hWidth * self.elementScale * 0.4,
                                   weight: Font.Weight.bold,
                                   design: Font.Design.rounded))
         .background(Color.teal)
         .foregroundColor(Color.white)
-        .overlay(RoundedRectangle(cornerRadius: hWidth * 0.25).stroke((info.elementIsSelected[Int(elementData["AtomicNumber"]!)! - 1]) ? Color.black : Color.white, lineWidth: hWidth * 0.1))
+        .overlay(
+            RoundedRectangle(cornerRadius: hWidth * 0.25).stroke(
+                (self.info.getIsSelected(atomicNumber: atomicNumber) == "T") ? Color.black : Color.white,
+                lineWidth: hWidth * 0.1))
         .cornerRadius(hWidth * 0.25)
         .position(x: hFix + ((CGFloat(col) * (gap + hWidth)) + gap),
                   y: (CGFloat(row) * (gap + vHeight)) + gap)
@@ -114,7 +125,7 @@ struct ElementsView: View {
     }
     
     private func renderLargeElementCell(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
-        return Text((self.elementScale == 1.0) ? self.largeElementCellText : "")
+        return Text((self.elementScale == 1.0) ? self.getLargeElementCellText(atomicNumber: 1) : "")
             .frame(width: ((hWidth * 2.5) + gap) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
@@ -132,7 +143,7 @@ struct ElementsView: View {
     }
     
     private func renderElementInfoPane(row: Int, col:Int, gap:CGFloat, hFix:CGFloat, hWidth:CGFloat, vHeight:CGFloat) -> some View {
-        return Text((self.elementScale == 1.0) ? self.elementInfoText : "")
+        return Text((self.elementScale == 1.0) ? self.getElementInfoText(atomicNumber: 1) : "")
             .frame(width: ((hWidth * 7.55) + (gap * 6.55)) * self.elementScale,
                    height: ((vHeight * 3) + (gap * 2)) * self.elementScale,
                    alignment: Alignment.center)
@@ -181,9 +192,9 @@ struct ElementsView: View {
     
     private func renderClearButton(xPos:CGFloat, yPos:CGFloat) -> some View {
         return Button("C") {
-            for index in 0..<(info.elementIsSelected.count) {
-                if (info.elementIsSelected[index]) {
-                    info.elementIsSelected[index].toggle()
+            for index in 0..<(info.elementsData.count) {
+                if (info.getIsSelected(atomicNumber: index + 1) == "T") {
+                    info.setIsSelected(atomicNumber: index + 1, isSelected: "F")
                 }
             }
         }
@@ -226,7 +237,7 @@ struct ElementsView: View {
         let horizontalSpace:CGFloat = sck.getHeight(factor: 1) * 4.0 / 3.0
         let horizontalWidth:CGFloat = (horizontalSpace - (gap * 19)) / 18
         let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
-        var data:IndexingIterator<[[String:String]]> = ElementsData.shared.getTheRealData().makeIterator()
+        var data:IndexingIterator<[[String:String]]> = info.elementsData.makeIterator()
         ZStack {
             renderSelectElementButton()
             renderCircle()
@@ -240,7 +251,7 @@ struct ElementsView: View {
                                 if (row != 3 || (col < 2 || col > 11)) { // Get rid of period 3 vacant cells
                                     if (row != 9 || (col > 2 && col < 17)) { // Get rid of period 8 vacant cells
                                         if (row != 10 || (col > 2 && col < 17)) { // Get rid of period 9 vacant cells
-                                            self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, elementData:data.next()!)
+                                            self.renderElementButton(row: row, col: col, gap: gap, hFix: horizontalFix, hWidth: horizontalWidth, vHeight: verticalHeight, atomicNumber: Int(data.next()!["AtomicNumber"]!)!)
                                         }
                                     }
                                 }
@@ -262,4 +273,3 @@ struct ElementsView: View {
         }
     }
 }
-

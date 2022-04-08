@@ -23,6 +23,7 @@ class DataScraper {
     }
     
     
+    
     private func setElementsData() {
         let url:String = "https://en.wikipedia.org/wiki/List_of_chemical_elements"
         let urlObject:URL = URL(string: url)!
@@ -36,7 +37,7 @@ class DataScraper {
                 return
             }
             self.elementsData = self.getElementsData(htmlString: htmlString) // change this
-            //print(self.elementsData!) // used to initialize theRealData
+            print(self.elementsData!) // used to initialize theRealData
         }
         taskSession.resume()
     }
@@ -66,6 +67,8 @@ class DataScraper {
                 elementDict["Symbol"] = elementData[index].replacingOccurrences(of: "\n<", with: "")
             } else if (index == 6) {
                 elementDict["Name"] = elementData[index].replacingOccurrences(of: "<", with: "")
+            } else if (index == 0) {
+                elementDict["Selected"] = "F"
             }
             // get atomic mass, they vary in data number
         }
