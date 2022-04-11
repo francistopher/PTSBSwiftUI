@@ -1,7 +1,7 @@
 # Periodic Table Study Buddy iOS
 
-- Version Alpha
-- Abrasive spamming of element buttons will lead random de/selection
+- This repository consists of version *Alpha*
+- Latest version coming to an App Store near you!
 
 ## Design
 
