@@ -18,7 +18,7 @@
 		B290310D27BEE167006D2203 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B290310C27BEE167006D2203 /* Assets.xcassets */; };
 		B290310F27BF16FF006D2203 /* ElementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B290310E27BF16FF006D2203 /* ElementsView.swift */; };
 		B2C5BCB227E979F0003D0963 /* DataScraper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C5BCB127E979F0003D0963 /* DataScraper.swift */; };
-		B2DF2F3D27F2C3DB005871C0 /* LearningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DF2F3C27F2C3DB005871C0 /* LearningView.swift */; };
+		B2DF2F3D27F2C3DB005871C0 /* MasteringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2DF2F3C27F2C3DB005871C0 /* MasteringView.swift */; };
 		B2FD268827BE176B002E1116 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FD268727BE176B002E1116 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +54,7 @@
 		B290310C27BEE167006D2203 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = PeriodicTableStudyBuddy/Assets.xcassets; sourceTree = "<group>"; };
 		B290310E27BF16FF006D2203 /* ElementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementsView.swift; sourceTree = "<group>"; };
 		B2C5BCB127E979F0003D0963 /* DataScraper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataScraper.swift; sourceTree = "<group>"; };
-		B2DF2F3C27F2C3DB005871C0 /* LearningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningView.swift; sourceTree = "<group>"; };
+		B2DF2F3C27F2C3DB005871C0 /* MasteringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasteringView.swift; sourceTree = "<group>"; };
 		B2FD268727BE176B002E1116 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,7 +98,7 @@
 				B24A55C927B5C53E0048BE9C /* IntroView.swift */,
 				B2FD268727BE176B002E1116 /* HomeView.swift */,
 				B290310E27BF16FF006D2203 /* ElementsView.swift */,
-				B2DF2F3C27F2C3DB005871C0 /* LearningView.swift */,
+				B2DF2F3C27F2C3DB005871C0 /* MasteringView.swift */,
 			);
 			path = PTSBViews;
 			sourceTree = "<group>";
@@ -294,7 +294,7 @@
 				B27731BA27B4C2F300B49682 /* PeriodicTableStudyBuddy.xcdatamodeld in Sources */,
 				B24A55C527B57A680048BE9C /* ScreenKit.swift in Sources */,
 				B290310F27BF16FF006D2203 /* ElementsView.swift in Sources */,
-				B2DF2F3D27F2C3DB005871C0 /* LearningView.swift in Sources */,
+				B2DF2F3D27F2C3DB005871C0 /* MasteringView.swift in Sources */,
 				B2FD268827BE176B002E1116 /* HomeView.swift in Sources */,
 				B2C5BCB227E979F0003D0963 /* DataScraper.swift in Sources */,
 				B24A55CA27B5C53E0048BE9C /* IntroView.swift in Sources */,
