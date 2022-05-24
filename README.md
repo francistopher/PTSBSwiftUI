@@ -2,6 +2,9 @@
 
 - This repository consists of version *Alpha*
 - Latest version coming to an App Store near you!
+- Swift only? Yes, Objective-C version coming in the distant future.
+	- What will be the difference?
+		- 3D! Communicate closer to the hardware.
 
 ## Prologue
 
