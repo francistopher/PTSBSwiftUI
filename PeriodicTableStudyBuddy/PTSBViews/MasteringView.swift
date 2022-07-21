@@ -9,7 +9,9 @@ import Foundation
 import SwiftUI
 
 struct MasteringView: View {
+    
     private let sck:ScreenKit = ScreenKit.shared
+    
     @State private var buttonsLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
     @State private var elementScale:CGFloat = 0.0
@@ -23,6 +25,9 @@ struct MasteringView: View {
     
     @StateObject var info:AppStateInfo
     
+    /*
+     TODO: combine growCircle and shrinkCircle button
+     */
     private func growCircle(newSize:CGFloat) { // grow circle background after select elements is pressed
         if (self.circleRadius < 1.75 - 0.025) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -53,7 +58,7 @@ struct MasteringView: View {
         }
     }
     
-    private func renderCircle() -> some View {
+    var circle: some View {
         return Circle()
             .offset(x: (sck.getWidth(factor: 5.0/3.0) - sck.getWidth(factor: self.circleRadius)) * 0.5,
                     y: (sck.getHeight(factor: 1) - sck.getWidth(factor: self.circleRadius)) * 0.5)
@@ -115,7 +120,7 @@ struct MasteringView: View {
             .position(x: xPos, y:yPos)
     }
     
-    private func renderStartMasteringButton() -> some View {
+    private var startMasteringButton: some View {
         Button("Start Mastering", role: ButtonRole.cancel, action: {
             if (self.circleRadius == 0.0) {
                 print("Start Learning")
@@ -137,7 +142,7 @@ struct MasteringView: View {
                     y: sck.getHeight(factor: 0))
     }
     
-    private func renderPanel() -> some View {
+    private var panel: some View {
         return Text("")
             .frame(width: sck.getHeight(factor: 0.9 * self.elementScale), height: sck.getHeight(factor: 0.9 * self.elementScale), alignment: .center)
             .background(Color.teal)
@@ -162,7 +167,7 @@ struct MasteringView: View {
         }
     }
     
-    private func renderNextButton() -> some View {
+    private var nextButton: some View {
         return Button(self.nextButtonText) {
             if self.nextButtonText == "Go Back" {
                 info.onHomeScreen = true
@@ -211,7 +216,7 @@ struct MasteringView: View {
         
     }
     
-    private func renderPromptText() -> some View {
+    private var promptText:some View {
         return Text(self.promptLabelText)
             .frame(width: sck.getHeight(factor: 0.8 * self.elementScale), height: sck.getHeight(factor: 0.15 * self.elementScale), alignment: .center)
             .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.04 * self.elementScale),
@@ -226,8 +231,8 @@ struct MasteringView: View {
             .multilineTextAlignment(TextAlignment.center)
     }
     
-    private func renderAnswerField() -> some View {
-        TextField("", text: self.$answerFieldText, onEditingChanged: { onEditChanged in
+    private var answerTextField: some View {
+        return TextField("", text: self.$answerFieldText, onEditingChanged: { onEditChanged in
             if onEditChanged {
                 if self.answerFieldText == "Enter Answer Here!" {
                     self.answerFieldText = ""
@@ -254,31 +259,31 @@ struct MasteringView: View {
         let horizontalWidth:CGFloat = (horizontalSpace - (gap * 19)) / 18
         let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
         ZStack {
-            renderStartMasteringButton()
-            renderCircle()
-            renderPanel()
-            renderPromptText()
+            self.startMasteringButton
+            self.circle
+            self.panel
+            self.promptText
             if showAnswerField {
-                renderAnswerField()
+                self.answerTextField
             }
-            renderNextButton()
+            self.nextButton
             renderCloseButton(
                 xPos:sck.getWidth(factor: 1.0) - (horizontalFix + horizontalWidth + (gap)),
                 yPos:verticalHeight * 10)
             
         }.onAppear {
-            func updateButtonsLength() {
-                if (self.buttonsLength < 0.25) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                        self.buttonsLength += 0.025
-                        updateButtonsLength()
-                    }
-                }
-            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 updateButtonsLength()
             }
         }
-        
+    }
+    
+    private func updateButtonsLength() {
+        if (self.buttonsLength < 0.25) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                self.buttonsLength += 0.025
+                updateButtonsLength()
+            }
+        }
     }
 }
