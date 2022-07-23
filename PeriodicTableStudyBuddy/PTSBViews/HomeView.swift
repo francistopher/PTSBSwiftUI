@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 struct HomeView: View {
-    let sck:ScreenKit = ScreenKit.shared
+//    let sck:ScreenKit = ScreenKit.shared
+    private let sck:ScreenKitObjC = ScreenKitObjC.sharedScreenKit() as! ScreenKitObjC
     
     @State private var ptsbRotation:Double = 0.0
     @State private var hydrogenLength:CGFloat = 0.0
@@ -19,8 +20,8 @@ struct HomeView: View {
         return Image(imageName)
             .resizable()
             .scaledToFit()
-            .frame(width: sck.getHeight(factor: self.hydrogenLength),
-                   height: sck.getHeight(factor: self.hydrogenLength),
+            .frame(width: sck.getHeight(self.hydrogenLength),
+                   height: sck.getHeight(self.hydrogenLength),
                    alignment: Alignment.center)
     }
     

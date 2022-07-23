@@ -10,7 +10,8 @@ import SwiftUI
 
 struct MasteringView: View {
     
-    private let sck:ScreenKit = ScreenKit.shared
+//    private let sck:ScreenKit = ScreenKit.shared
+    private let sck:ScreenKitObjC = ScreenKitObjC.sharedScreenKit() as! ScreenKitObjC
     
     @State private var buttonsLength:CGFloat = 0.0
     @State private var circleRadius:CGFloat = 0.0
@@ -60,10 +61,10 @@ struct MasteringView: View {
     
     var circle: some View {
         return Circle()
-            .offset(x: (sck.getWidth(factor: 5.0/3.0) - sck.getWidth(factor: self.circleRadius)) * 0.5,
-                    y: (sck.getHeight(factor: 1) - sck.getWidth(factor: self.circleRadius)) * 0.5)
-            .size(width: sck.getWidth(factor: self.circleRadius),
-                  height: sck.getWidth(factor: self.circleRadius))
+            .offset(x: (sck.getWidth(5.0/3.0) - sck.getWidth(self.circleRadius)) * 0.5,
+                    y: (sck.getHeight(1) - sck.getWidth(self.circleRadius)) * 0.5)
+            .size(width: sck.getWidth(self.circleRadius),
+                  height: sck.getWidth( self.circleRadius))
             .fill(Color.init(red: 255/255, green: 180/255, blue: 222/255))
     }
     
@@ -107,16 +108,16 @@ struct MasteringView: View {
                 self.shrinkElementScale(elementScale: 1.0 - 0.04)
             }
         })
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.05 * self.elementScale),
+            .font(SwiftUI.Font.system(size: sck.getHeight( 0.05 * self.elementScale),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
-            .frame(width: sck.getHeight(factor: self.elementScale * 0.1),
-                   height: sck.getHeight(factor: self.elementScale * 0.1),
+            .frame(width: sck.getHeight( self.elementScale * 0.1),
+                   height: sck.getHeight( self.elementScale * 0.1),
                    alignment: Alignment.center)
             .background(Color.init(red:1, green:0, blue:0))
             .foregroundColor(Color.white)
-            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.01)))
-            .cornerRadius(sck.getHeight(factor: 0.1))
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight( 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight( 0.01)))
+            .cornerRadius(sck.getHeight( 0.1))
             .position(x: xPos, y:yPos)
     }
     
@@ -128,28 +129,28 @@ struct MasteringView: View {
             }
             
         })
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.045 * (self.buttonsLength / 0.25)),
+            .font(SwiftUI.Font.system(size: sck.getHeight( 0.045 * (self.buttonsLength / 0.25)),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
-            .frame(width: sck.getHeight(factor: self.buttonsLength),
-                   height: sck.getHeight(factor: self.buttonsLength),
+            .frame(width: sck.getHeight( self.buttonsLength),
+                   height: sck.getHeight( self.buttonsLength),
                    alignment: Alignment.center)
             .background(Color.init(red: 255/255, green: 180/255, blue: 222/255))
             .foregroundColor(Color.white)
-            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.05)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.025)))
-            .cornerRadius(sck.getHeight(factor: 0.05))
-            .offset(x: sck.getHeight(factor: 0.6),
-                    y: sck.getHeight(factor: 0))
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight( 0.05)).stroke(Color.white, lineWidth: self.sck.getHeight( 0.025)))
+            .cornerRadius(sck.getHeight( 0.05))
+            .offset(x: sck.getHeight( 0.6),
+                    y: sck.getHeight( 0))
     }
     
     private var panel: some View {
         return Text("")
-            .frame(width: sck.getHeight(factor: 0.9 * self.elementScale), height: sck.getHeight(factor: 0.9 * self.elementScale), alignment: .center)
+            .frame(width: sck.getHeight( 0.9 * self.elementScale), height: sck.getHeight( 0.9 * self.elementScale), alignment: .center)
             .background(Color.teal)
             .foregroundColor(Color.white)
             .overlay(
-                RoundedRectangle(cornerRadius: sck.getHeight(factor: 0.1 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth(factor: 0.025 * self.elementScale)))
-            .cornerRadius(sck.getHeight(factor: 0.1 * self.elementScale))
+                RoundedRectangle(cornerRadius: sck.getHeight(0.1 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth( 0.025 * self.elementScale)))
+            .cornerRadius(sck.getHeight( 0.1 * self.elementScale))
     }
     
     private func loadQuestionAndAnswer() {
@@ -203,31 +204,31 @@ struct MasteringView: View {
                 }
             }
         }
-        .frame(width: sck.getHeight(factor: 0.3 * self.elementScale), height: sck.getHeight(factor: 0.15 * self.elementScale), alignment: .center)
-        .font(SwiftUI.Font.system(size:sck.getHeight(factor: 0.04 * self.elementScale),
+        .frame(width: sck.getHeight( 0.3 * self.elementScale), height: sck.getHeight( 0.15 * self.elementScale), alignment: .center)
+        .font(SwiftUI.Font.system(size:sck.getHeight( 0.04 * self.elementScale),
                                   weight: Font.Weight.bold,
                                   design: Font.Design.rounded))
         .background(Color.init(red:63/255, green: 224/255, blue:208/255))
         .foregroundColor(Color.white)
         .overlay(
-            RoundedRectangle(cornerRadius: sck.getHeight(factor: 0.05 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth(factor: 0.0125 * self.elementScale)))
-        .cornerRadius(sck.getHeight(factor: 0.05 * self.elementScale))
-        .offset(x: 0, y: sck.getHeight(factor: 0.325 * self.elementScale))
+            RoundedRectangle(cornerRadius: sck.getHeight( 0.05 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth( 0.0125 * self.elementScale)))
+        .cornerRadius(sck.getHeight( 0.05 * self.elementScale))
+        .offset(x: 0, y: sck.getHeight(0.325 * self.elementScale))
         
     }
     
     private var promptText:some View {
         return Text(self.promptLabelText)
-            .frame(width: sck.getHeight(factor: 0.8 * self.elementScale), height: sck.getHeight(factor: 0.15 * self.elementScale), alignment: .center)
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.04 * self.elementScale),
+            .frame(width: sck.getHeight( 0.8 * self.elementScale), height: sck.getHeight( 0.15 * self.elementScale), alignment: .center)
+            .font(SwiftUI.Font.system(size: sck.getHeight( 0.04 * self.elementScale),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
             .background(Color.init(red:63/255, green: 224/255, blue:208/255))
             .foregroundColor(Color.white)
             .overlay(
-                RoundedRectangle(cornerRadius: sck.getHeight(factor: 0.05 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth(factor: 0.0125 * self.elementScale)))
-            .cornerRadius(sck.getHeight(factor: 0.05 * self.elementScale))
-            .offset(x: 0, y: -sck.getHeight(factor: 0.325 * self.elementScale))
+                RoundedRectangle(cornerRadius: sck.getHeight( 0.05 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth( 0.0125 * self.elementScale)))
+            .cornerRadius(sck.getHeight( 0.05 * self.elementScale))
+            .offset(x: 0, y: -sck.getHeight( 0.325 * self.elementScale))
             .multilineTextAlignment(TextAlignment.center)
     }
     
@@ -239,25 +240,25 @@ struct MasteringView: View {
                 }
             }
         })
-            .frame(width: sck.getHeight(factor: 0.6 * self.elementScale), height: sck.getHeight(factor: 0.15 * self.elementScale), alignment: .center)
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.04 * self.elementScale),
+            .frame(width: sck.getHeight( 0.6 * self.elementScale), height: sck.getHeight( 0.15 * self.elementScale), alignment: .center)
+            .font(SwiftUI.Font.system(size: sck.getHeight(0.04 * self.elementScale),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
             .background(Color.init(red: 255/255, green: 180/255, blue: 222/255))
             .foregroundColor(.white)
             .overlay(
-                RoundedRectangle(cornerRadius: sck.getHeight(factor: 0.05 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth(factor: 0.0125 * self.elementScale)))
-            .cornerRadius(sck.getHeight(factor: 0.05 * self.elementScale))
+                RoundedRectangle(cornerRadius: sck.getHeight( 0.05 * self.elementScale)).stroke(Color.white, lineWidth: sck.getWidth( 0.0125 * self.elementScale)))
+            .cornerRadius(sck.getHeight( 0.05 * self.elementScale))
             .multilineTextAlignment(TextAlignment.center)
             .disableAutocorrection(true)
     }
     
     var body: some View {
-        let gap:CGFloat = sck.getHeight(factor: 0.0075)
-        let verticalHeight:CGFloat = (sck.getHeight(factor: 1) - (gap * 12)) / 11
-        let horizontalSpace:CGFloat = sck.getHeight(factor: 1) * 4.0 / 3.0
+        let gap:CGFloat = sck.getHeight( 0.0075)
+        let verticalHeight:CGFloat = (sck.getHeight( 1) - (gap * 12)) / 11
+        let horizontalSpace:CGFloat = sck.getHeight( 1) * 4.0 / 3.0
         let horizontalWidth:CGFloat = (horizontalSpace - (gap * 19)) / 18
-        let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
+        let horizontalFix:CGFloat = ((sck.getWidth( 1) - horizontalSpace) * 0.5)
         ZStack {
             self.startMasteringButton
             self.circle
@@ -268,7 +269,7 @@ struct MasteringView: View {
             }
             self.nextButton
             renderCloseButton(
-                xPos:sck.getWidth(factor: 1.0) - (horizontalFix + horizontalWidth + (gap)),
+                xPos:sck.getWidth( 1.0) - (horizontalFix + horizontalWidth + (gap)),
                 yPos:verticalHeight * 10)
             
         }.onAppear {

@@ -20,7 +20,7 @@ struct PeriodicTableStudyBuddyApp: App {
         UILabel.appearance().isExclusiveTouch = true
     }
     
-    let sk:ScreenKit = ScreenKit.shared
+    //let sk:ScreenKit = ScreenKit.shared
     @StateObject var info = AppStateInfo()
     
     var body: some Scene {

@@ -10,7 +10,8 @@ import SwiftUI
 import CoreData
 
 struct ElementsView: View {
-    private let sck:ScreenKit = ScreenKit.shared
+//    private let sck:ScreenKit = ScreenKit.shared
+    private let sck:ScreenKitObjC = ScreenKitObjC.sharedScreenKit() as! ScreenKitObjC
     @State private var elementBeingPressed:Bool = false
     
     @State private var buttonLength:CGFloat = 0.0
@@ -93,10 +94,10 @@ struct ElementsView: View {
     
     private var circle:some View {
         return Circle()
-            .offset(x: (sck.getWidth(factor: 1.0/3.0) - sck.getWidth(factor: self.circleRadius)) * 0.5,
-                    y: (sck.getHeight(factor: 1) - sck.getWidth(factor: self.circleRadius)) * 0.5)
-            .size(width: sck.getWidth(factor: self.circleRadius),
-                  height: sck.getWidth(factor: self.circleRadius))
+            .offset(x: (sck.getWidth(  1.0/3.0) - sck.getWidth(  self.circleRadius)) * 0.5,
+                    y: (sck.getHeight(  1) - sck.getWidth(  self.circleRadius)) * 0.5)
+            .size(width: sck.getWidth(  self.circleRadius),
+                  height: sck.getWidth(  self.circleRadius))
             .fill(Color.init(red: 255/255, green: 180/255, blue: 222/255))
     }
     
@@ -108,18 +109,18 @@ struct ElementsView: View {
             }
             
         })
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.045 * (self.buttonLength / 0.25)),
+            .font(SwiftUI.Font.system(size: sck.getHeight(  0.045 * (self.buttonLength / 0.25)),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
-            .frame(width: sck.getHeight(factor: self.buttonLength),
-                   height: sck.getHeight(factor: self.buttonLength),
+            .frame(width: sck.getHeight(  self.buttonLength),
+                   height: sck.getHeight(  self.buttonLength),
                    alignment: Alignment.center)
             .background(Color.init(red: 255/255, green: 180/255, blue: 222/255))
             .foregroundColor(Color.white)
-            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.05)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.025)))
-            .cornerRadius(sck.getHeight(factor: 0.05))
-            .offset(x: sck.getHeight(factor: -0.6),
-                    y: sck.getHeight(factor: 0))
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(  0.05)).stroke(Color.white, lineWidth: self.sck.getHeight(  0.025)))
+            .cornerRadius(sck.getHeight(  0.05))
+            .offset(x: sck.getHeight(  -0.6),
+                    y: sck.getHeight(  0))
     }
     
     /*
@@ -133,16 +134,16 @@ struct ElementsView: View {
                 }
             }
         }
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.05 * self.elementScale),
+            .font(SwiftUI.Font.system(size: sck.getHeight(  0.05 * self.elementScale),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
-            .frame(width: sck.getHeight(factor: self.elementScale * 0.1),
-                   height: sck.getHeight(factor: self.elementScale * 0.1),
+            .frame(width: sck.getHeight(  self.elementScale * 0.1),
+                   height: sck.getHeight(  self.elementScale * 0.1),
                    alignment: Alignment.center)
             .background(Color.gray)
             .foregroundColor(Color.white)
-            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.01)))
-            .cornerRadius(sck.getHeight(factor: 0.1))
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(  0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(  0.01)))
+            .cornerRadius(sck.getHeight(  0.1))
             .position(x: xPos, y:yPos)
     }
         
@@ -156,25 +157,25 @@ struct ElementsView: View {
                 self.shrinkElementScale(elementScale: 1.0 - 0.04)
             }
         })
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.05 * self.elementScale),
+            .font(SwiftUI.Font.system(size: sck.getHeight(  0.05 * self.elementScale),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
-            .frame(width: sck.getHeight(factor: self.elementScale * 0.1),
-                   height: sck.getHeight(factor: self.elementScale * 0.1),
+            .frame(width: sck.getHeight(  self.elementScale * 0.1),
+                   height: sck.getHeight(  self.elementScale * 0.1),
                    alignment: Alignment.center)
             .background(Color.init(red:1, green:0, blue:0))
             .foregroundColor(Color.white)
-            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(factor: 0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(factor: 0.01)))
-            .cornerRadius(sck.getHeight(factor: 0.1))
+            .overlay(RoundedRectangle(cornerRadius: self.sck.getHeight(  0.2)).stroke(Color.white, lineWidth: self.sck.getHeight(  0.01)))
+            .cornerRadius(sck.getHeight(  0.1))
             .position(x: xPos, y:yPos)
     }
     
     var body: some View {
-        let gap:CGFloat = sck.getHeight(factor: 0.0075)
-        let verticalHeight:CGFloat = (sck.getHeight(factor: 1) - (gap * 12)) / 11
-        let horizontalSpace:CGFloat = sck.getHeight(factor: 1) * 4.0 / 3.0
+        let gap:CGFloat = sck.getHeight(  0.0075)
+        let verticalHeight:CGFloat = (sck.getHeight(  1) - (gap * 12)) / 11
+        let horizontalSpace:CGFloat = sck.getHeight(  1) * 4.0 / 3.0
         let horizontalWidth:CGFloat = (horizontalSpace - (gap * 19)) / 18
-        let horizontalFix:CGFloat = ((sck.getWidth(factor: 1) - horizontalSpace) * 0.5)
+        let horizontalFix:CGFloat = ((sck.getWidth(  1) - horizontalSpace) * 0.5)
         var data:IndexingIterator<[[String:String]]> = info.elementsData.makeIterator()
         ZStack {
             self.selectElementsButton

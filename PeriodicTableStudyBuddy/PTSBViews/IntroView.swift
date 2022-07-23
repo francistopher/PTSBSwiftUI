@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
+
 struct IntroView: View {
-    let sck:ScreenKit = ScreenKit.shared
+//    let sck:ScreenKit = ScreenKit.shared
+    private let sck:ScreenKitObjC = ScreenKitObjC.sharedScreenKit() as! ScreenKitObjC
     
     @State private var circleSize:CGFloat = 0.0;
     @State private var backgroundColor:UIColor = UIColor.white
@@ -28,10 +30,10 @@ struct IntroView: View {
     
     private var circle: some View {
         return Circle() // circle that grows after select elements is pressed
-            .offset(x: (sck.getWidth(factor: 1) - sck.getWidth(factor: self.circleSize)) * 0.5,
-                    y: (sck.getHeight(factor: 1) - sck.getWidth(factor: self.circleSize)) * 0.5)
-            .size(width: sck.getWidth(factor: self.circleSize),
-                  height: sck.getWidth(factor: self.circleSize))
+            .offset(x: (sck.getWidth(1) - sck.getWidth(self.circleSize)) * 0.5,
+                    y: (sck.getHeight(1) - sck.getWidth(self.circleSize)) * 0.5)
+            .size(width: sck.getWidth(self.circleSize),
+                  height: sck.getWidth(self.circleSize))
             .fill(Color.teal)
     }
     
@@ -55,9 +57,9 @@ struct IntroView: View {
     private func getLetter(i:Int, offsetDirections:(Int, Int)) -> some View { // returns an intro letter
         return Text(textLetters[i])
             .offset(
-                x: CGFloat(offsetDirections.0) * sck.getHeight(factor: 0.1),
-                y: CGFloat(offsetDirections.1) * sck.getHeight(factor: 0.1125))
-            .font(SwiftUI.Font.system(size: sck.getHeight(factor: 0.25),
+                x: CGFloat(offsetDirections.0) * sck.getHeight(0.1),
+                y: CGFloat(offsetDirections.1) * sck.getHeight(0.1125))
+            .font(SwiftUI.Font.system(size: sck.getHeight(0.25),
                                       weight: Font.Weight.bold,
                                       design: Font.Design.rounded))
             .foregroundColor(Color.teal)
