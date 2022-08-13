@@ -1,10 +1,6 @@
-# Periodic Table Study Buddy iOS Swift
+# Periodic Table Study Buddy iOS Swift (Alpha)
 
-- This repository consists of version *Alpha*
-- Latest version coming to an App Store near you!
-- Swift only? Yes, Objective-C version coming in the distant future.
-	- What will be the difference?
-		- 3D! Communicate closer to the hardware.
+- Arriving to an App Store near you!
 
 ## Prologue
 
@@ -14,4 +10,5 @@ I was living with my parents while the pandemic was roaring. I and my bored brai
 
 - Comment code
 - Write testcases
-- Implement await sync closure
+- Update codebase for MacOS support
+
